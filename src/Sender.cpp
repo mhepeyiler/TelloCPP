@@ -1,0 +1,82 @@
+#include "Sender.hpp"
+#include <boost/asio.hpp>
+#include <iostream>
+
+using boost::asio::ip::udp;
+using boost::asio::ip::address;
+
+struct Sender::Private_cont
+{
+    Private_cont(const std::string& ip, int port)
+        :   mip(ip), mport(port), socket{io_service}
+    {
+        remote_endpoint = udp::endpoint(address::from_string(mip), port);
+        
+    }
+
+    void open() noexcept
+    {
+        try
+        {
+            socket.open(udp::v4());
+        }
+        catch(const boost::system::system_error& err)
+        {
+            std::cout << err.what() << '\n';
+        }
+        catch(...)
+        {
+            std::cout << "Unknown error!\n";
+        }
+    }
+
+    void close() noexcept
+    {
+        try
+        {
+            socket.close();
+        }
+        catch(const boost::system::system_error& err)
+        {
+            std::cerr << err.what() << '\n';
+        }
+        catch(...)
+        {
+            std::cout << "Unknown error!\n";
+        }
+        
+    }
+
+    size_t send(const std::string& in) 
+    {   
+        open();
+        boost::system::error_code err;
+        auto sent = socket.send_to(boost::asio::buffer(in), remote_endpoint, 0, err);
+        close();
+        std::cout << "Sent payload..." << sent << "\n";
+        return sent;
+    }
+
+    
+    std::string mip;
+    int mport;
+    boost::asio::io_service io_service;
+    udp::socket socket;
+    udp::endpoint remote_endpoint;
+};
+
+Sender::Sender(const std::string& ip, int port)
+    :   pc(new Private_cont{ip, port})
+{
+    
+}
+
+size_t Sender::operator()(const std::string& in)
+{
+    return pc->send(in);
+}
+
+Sender::~Sender()
+{
+    
+}
