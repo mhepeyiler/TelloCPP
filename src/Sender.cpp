@@ -14,47 +14,25 @@ struct Sender::Private_cont
         
     }
 
-    void open() noexcept
-    {
-        try
-        {
-            socket.open(udp::v4());
-        }
-        catch(const boost::system::system_error& err)
-        {
-            std::cout << err.what() << '\n';
-        }
-        catch(...)
-        {
-            std::cout << "Unknown error!\n";
-        }
-    }
-
-    void close() noexcept
-    {
-        try
-        {
-            socket.close();
-        }
-        catch(const boost::system::system_error& err)
-        {
-            std::cerr << err.what() << '\n';
-        }
-        catch(...)
-        {
-            std::cout << "Unknown error!\n";
-        }
-        
-    }
-
-    size_t send(const std::string& in) 
+    size_t send(const std::string& in) noexcept
     {   
-        open();
+        try
+        {
+        socket.open(udp::v4());
         boost::system::error_code err;
         auto sent = socket.send_to(boost::asio::buffer(in), remote_endpoint, 0, err);
-        close();
+        socket.close();
         std::cout << "Sent payload..." << sent << "\n";
         return sent;
+        }
+        catch(const boost::system::system_error& err)
+        {
+            std::cout << err.what() << "\n";
+        }
+        catch(...)
+        {
+            std::cout << "Unknown error!\n";
+        }
     }
 
     
@@ -78,5 +56,5 @@ size_t Sender::operator()(const std::string& in)
 
 Sender::~Sender()
 {
-    
+
 }
