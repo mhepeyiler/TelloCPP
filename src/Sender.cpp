@@ -18,12 +18,14 @@ struct Sender::Private_cont
     {   
         try
         {
-        socket.open(udp::v4());
-        boost::system::error_code err;
-        auto sent = socket.send_to(boost::asio::buffer(in), remote_endpoint, 0, err);
-        socket.close();
-        std::cout << "Sent payload..." << sent << "\n";
-        return sent;
+            socket.open(udp::v4());
+            boost::system::error_code err;
+            auto sent = socket.send_to(boost::asio::buffer(in), remote_endpoint, 0, err);
+            socket.close();
+            std::cout << "\nSent payload..." << sent << "\n";
+
+            return sent;
+
         }
         catch(const boost::system::system_error& err)
         {
@@ -33,6 +35,8 @@ struct Sender::Private_cont
         {
             std::cout << "Unknown error!\n";
         }
+
+        return 0;
     }
 
     
@@ -49,12 +53,12 @@ Sender::Sender(const std::string& ip, int port)
     
 }
 
+Sender::~Sender()
+{
+    pc.release();
+}
+
 size_t Sender::operator()(const std::string& in)
 {
     return pc->send(in);
-}
-
-Sender::~Sender()
-{
-
 }
