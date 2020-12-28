@@ -4,11 +4,12 @@
 #include <string>
 #include <memory>
 #include <array>
+
 class Receiver
 {
 public:
-    Receiver(const std::string&, int);
-    void set_buffer(std::array<char,1600>&);
+    Receiver(std::array<char,1600>&, const std::string&, int);
+    ~Receiver();
     void receive();
 private:
     struct Private_cont;
