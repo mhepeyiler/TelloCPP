@@ -7,9 +7,10 @@
 class Sender
 {
 public:
-    Sender(const std::string&, int);
+    Sender(const std::string &, int);
     ~Sender();
-    size_t operator()(const std::string& in);
+    size_t operator()(const std::string &in);
+
 private:
     struct Private_cont;
     std::unique_ptr<Private_cont> pc;
