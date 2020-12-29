@@ -12,8 +12,8 @@ public:
     size_t operator()(const std::string &in);
 
 private:
-    struct Private_cont;
-    std::unique_ptr<Private_cont> pc;
+    struct mSender_private;
+    std::unique_ptr<mSender_private> pc;
 };
 
 #endif
