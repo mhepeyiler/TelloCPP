@@ -8,13 +8,15 @@
 class Receiver
 {
 public:
-    Receiver(std::array<char,1600>&, const std::string&, int);
+    Receiver(std::array<char, 1600> &, const std::string &, int);
     ~Receiver();
     void receive();
+    bool getflag() const;
+    void resetflag();
+    
 private:
-    struct Private_cont;
-    std::unique_ptr<Private_cont> pc;
+    struct mReceiver_private;
+    std::unique_ptr<mReceiver_private> pc;
 };
-
 
 #endif
