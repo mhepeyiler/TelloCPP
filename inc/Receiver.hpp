@@ -13,7 +13,7 @@ public:
     void receive();
     bool getflag() const;
     void resetflag();
-    
+    size_t getlength()const;
 private:
     struct mReceiver_private;
     std::unique_ptr<mReceiver_private> pc;

@@ -27,6 +27,7 @@ struct Receiver::mReceiver_private
     std::array<char, 1600> mrecv_buffer{};
     udp::endpoint mremote_endpoint;
     bool mend_flag{false};
+    size_t mcount{0};
 };
 
 Receiver::mReceiver_private::mReceiver_private(std::array<char, 1600> &buff, const std::string &ip, int port)
@@ -35,7 +36,6 @@ Receiver::mReceiver_private::mReceiver_private(std::array<char, 1600> &buff, con
 Receiver::mReceiver_private::~mReceiver_private()
 {
     boost::system::error_code err;
-    std::cout << "test";
     msocket.shutdown(udp::socket::shutdown_receive, err);
     msocket.close();
 }
@@ -46,8 +46,8 @@ void Receiver::mReceiver_private::handle_receive(const boost::system::error_code
     {
         std::cout << "\nReceive failed: " << error.message() << '\n';
     }
-    std::cout << "Received\n";
     std::copy(begin(mrecv_buffer), begin(mrecv_buffer) + bytes_transferred, begin(mbuff));
+    mcount = bytes_transferred;
     mend_flag = true;
     wait();
 }
@@ -60,10 +60,7 @@ void Receiver::mReceiver_private::receive()
     wait();
 
     mio_service.run();
-
-    
 }
-
 
 void Receiver::mReceiver_private::wait()
 {
@@ -71,10 +68,9 @@ void Receiver::mReceiver_private::wait()
                                boost::bind(&mReceiver_private::handle_receive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 }
 
-
 void Receiver::mReceiver_private::interrupt_handler(const boost::system::error_code &error, int signal_number)
 {
-    if(error)
+    if (error)
     {
         std::cerr << "Error occurred! Interrupt!\n";
     }
@@ -90,8 +86,7 @@ void Receiver::mReceiver_private::interrupt()
 /*******************************************************/
 
 Receiver::Receiver(std::array<char, 1600> &arr, const std::string &ip, int port)
-    : pc{new mReceiver_private{arr, ip, port}}   { }
-
+    : pc{new mReceiver_private{arr, ip, port}} {}
 
 void Receiver::receive()
 {
@@ -112,4 +107,9 @@ bool Receiver::getflag() const
 void Receiver::resetflag()
 {
     pc->mend_flag = false;
+}
+
+size_t Receiver::getlength() const
+{
+    return pc->mcount;
 }
