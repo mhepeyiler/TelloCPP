@@ -7,7 +7,6 @@ using boost::asio::ip::udp;
 
 struct Sender::mSender_private
 {
-
     mSender_private(const std::string &ip, int port);
     size_t send(const std::string &in) noexcept;
 
