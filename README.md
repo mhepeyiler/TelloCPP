@@ -1,2 +1,2 @@
-# TelloCPP
-DJI Ryze Tello C++ communication API
+# TelloROS
+DJI Ryze Tello ROS communication API that written in C++
