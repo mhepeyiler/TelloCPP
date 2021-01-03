@@ -59,7 +59,6 @@ TEST(Acceleration, PositiveNos)
 int main(int argc, char** argv)
 {
     testing::InitGoogleTest(&argc, argv);
-    std::cout << "Test";
     std::string s{R"(pitch:0;roll:0;yaw:0;
                     vgx:0;vgy:0;vgz:0;
                     templ:69;temph:72;
