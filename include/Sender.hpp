@@ -1,5 +1,5 @@
-#ifndef TELLOCPP_INC_SENDER_HPP_
-#define TELLOCPP_INC_SENDER_HPP_
+#ifndef TELLOROS_INCLUDE_SENDER_HPP_
+#define TELLOROS_INCLUDE_SENDER_HPP_
 
 #include <string>
 #include <memory>
