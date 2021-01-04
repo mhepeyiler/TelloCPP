@@ -5,7 +5,7 @@ Parser p;
 
 TEST(Orientation, PositiveNos)
 {
-    ASSERT_EQ(0, std::get<0>(p.getOrien()));
+    ASSERT_EQ(5, std::get<0>(p.getOrien()));
     ASSERT_EQ(0, std::get<1>(p.getOrien()));
     ASSERT_EQ(0, std::get<2>(p.getOrien()));
 }
@@ -19,8 +19,8 @@ TEST(Velocity, PositiveNos)
 
 TEST(Temperature, PositiveNos)
 {
-    ASSERT_EQ(69, std::get<0>(p.getMinMaxTemp()));
-    ASSERT_EQ(69, std::get<1>(p.getMinMaxTemp()));
+    ASSERT_EQ(69, p.getMinMaxTemp().first);
+    ASSERT_EQ(72, p.getMinMaxTemp().second);
 }
 
 TEST(TimeOfFlight, PositiveNos)
@@ -50,16 +50,16 @@ TEST(Time, PositiveNos)
 
 TEST(Acceleration, PositiveNos)
 {
-    ASSERT_EQ(-5.00, std::get<0>(p.getVel()));
-    ASSERT_EQ(-3.00, std::get<1>(p.getVel()));
-    ASSERT_EQ(-1009.00, std::get<2>(p.getVel()));
+    ASSERT_EQ(-5.00, std::get<0>(p.getAcc()));
+    ASSERT_EQ(-3.00, std::get<1>(p.getAcc()));
+    ASSERT_EQ(-1009.00, std::get<2>(p.getAcc()));
     
 }
 
 int main(int argc, char** argv)
 {
     testing::InitGoogleTest(&argc, argv);
-    std::string s{R"(pitch:0;roll:0;yaw:0;
+    std::string s{R"(pitch:5;roll:0;yaw:0;
                     vgx:0;vgy:0;vgz:0;
                     templ:69;temph:72;
                     tof:80;h:70;bat:80;baro:64.45;time:4;

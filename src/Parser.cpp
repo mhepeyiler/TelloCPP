@@ -1,6 +1,5 @@
 #include <Parser.hpp>
 #include <type_traits>
-#include <iostream>
 
 template<typename T>
 static T getVal(const std::string& str)
@@ -8,7 +7,8 @@ static T getVal(const std::string& str)
     if constexpr(std::is_same_v<T, double>)
     {
         return std::stod(str);
-    }else if constexpr(std::is_same_v<T, int>)
+    }
+    else if constexpr(std::is_same_v<T, int>)
     {
         return std::stoi(str);
     }
@@ -17,9 +17,9 @@ static T getVal(const std::string& str)
 static std::string getToken(const std::string& str, size_t& pos)
 {
     size_t beg = str.find_first_of(":", pos);
-    size_t end = str.find_first_of(";", pos);
+    size_t end = str.find_first_of(";", beg);
     pos = end;
-    return std::string{str, beg+1, end};
+    return std::string{str, beg+1, end-pos-1};
 }
 
 
@@ -27,8 +27,7 @@ void Parser::operator()(const std::string& str)
 {
     size_t pos = 0;
 
-    mpitch = getVal<pitch_t>(getToken(str, pos));    
-    std::cout << mpitch;
+    mpitch = getVal<pitch_t>(getToken(str, pos));
     mroll = getVal<roll_t>(getToken(str, pos));
     myaw = getVal<yaw_t>(getToken(str, pos));
 
@@ -55,7 +54,7 @@ void Parser::operator()(const std::string& str)
 
 std::tuple<roll_t, pitch_t, yaw_t> Parser::getOrien() const
 {
-    return std::tuple<roll_t, pitch_t, yaw_t>{mroll, mpitch, myaw};
+    return std::tuple<pitch_t, roll_t, yaw_t>{mpitch, mroll, myaw};
 }
 
 std::tuple<vx_t, vy_t, vz_t> Parser::getVel() const
@@ -97,4 +96,3 @@ bat_t Parser::getBattery() const
 {
     return mbat;
 }
-
