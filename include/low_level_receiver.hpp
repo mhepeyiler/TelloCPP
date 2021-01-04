@@ -1,5 +1,5 @@
-#ifndef TELLO_ROS_INCLUDE_LowLevelReceiver_HPP_
-#define TELLO_ROS_INCLUDE_LowLevelReceiver_HPP_
+#ifndef TELLO_ROS_INCLUDE_LOWLEVELRECEIVER_HPP_
+#define TELLO_ROS_INCLUDE_LOWLEVELRECEIVER_HPP_
 
 #include <string>
 #include <memory>
