@@ -45,7 +45,7 @@ void State::pubOrien()const
     static tf2::Quaternion myQuaternion;
     static geometry_msgs::Quaternion msg;
 
-    myQuaternion.setRPY(roll_, pitch_, yaw_);
+    myQuaternion.setRPY(degree2Radian(roll_), degree2Radian(pitch_), degree2Radian(yaw_));
     msg.x = myQuaternion.x();
     msg.y = myQuaternion.y();
     msg.z = myQuaternion.z();
