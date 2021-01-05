@@ -25,7 +25,31 @@ using tm_t = int;
 using bar_t = double;
 using bat_t = double;
 
-class TelloParser
+class Param
+{
+protected:
+    roll_t roll_{};
+    pitch_t pitch_{};
+    yaw_t yaw_{};
+
+    vx_t vx_{};
+    vy_t vy_{};
+    vz_t vz_{};
+
+    ax_t ax_{};
+    ay_t ay_{};
+    az_t az_{};
+
+    tof_t tof_{};
+    height_t height_{};
+    templ_t templ_{};
+    temph_t temph_{};
+    tm_t tm_{};
+    bar_t bar_{};
+    bat_t bat_{};
+};
+
+class TelloParser : protected Param
 {
 public:
     TelloParser() = default;
@@ -46,25 +70,6 @@ public:
     bat_t getBattery() const;
 
 private:
-    roll_t roll_{};
-    pitch_t pitch_{};
-    yaw_t yaw_{};
-
-    vx_t vx_{};
-    vy_t vy_{};
-    vz_t vz_{};
-
-    ax_t ax_{};
-    ay_t ay_{};
-    az_t az_{};
-
-    tof_t tof_{};
-    height_t height_{};
-    templ_t templ_{};
-    temph_t temph_{};
-    tm_t tm_{};
-    bar_t bar_{};
-    bat_t bat_{};
 };
 
 #endif
