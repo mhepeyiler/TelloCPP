@@ -78,6 +78,7 @@ void LowLevelReceiver::LowLevelReceiver_private_::handle_receive(const boost::sy
 void LowLevelReceiver::LowLevelReceiver_private_::receive()
 {
     socket_.open(udp::v4());
+    socket_.set_option(boost::asio::socket_base::reuse_address(true));
     socket_.bind(udp::endpoint(address::from_string(ip_), port_));
 
     wait();

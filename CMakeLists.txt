@@ -146,7 +146,11 @@ include
 add_executable(${PROJECT_NAME}_sub_node   src/low_level_sender.cpp
                                           src/tello_ros_low_level_sub.cpp)
 
-# add_executable(${PROJECT_NAME}_pub_sender src/Sender.cpp)
+add_executable(${PROJECT_NAME}_pub_node src/low_level_receiver.cpp
+                                        src/tello_parser.cpp
+                                        src/tello_ros_state.cpp
+                                        src/tello_ros_state_pub.cpp)
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -160,6 +164,10 @@ add_executable(${PROJECT_NAME}_sub_node   src/low_level_sender.cpp
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_sub_node
+   ${catkin_LIBRARIES}
+)
+
+target_link_libraries(${PROJECT_NAME}_pub_node
    ${catkin_LIBRARIES}
 )
 

@@ -30,14 +30,34 @@
 #include "geometry_msgs/Accel.h"
 #include "geometry_msgs/Pose.h"
 #include "ros/time.h"
+#include "ros/ros.h"
 #include "sensor_msgs/BatteryState.h"
-
+#include <string>
 
 static double degree2Radian(double deg)
 {
     if(deg < 0)
         return -1*deg*M_PI/180;
     return deg*M_PI/180;    
+}
+
+void State::operator()(const std::array<char,1600>& arr, size_t n)
+{
+    tp_(std::string{cbegin(arr), cbegin(arr) + n});
+    roll_ = std::get<0>(tp_.getOrien());
+    pitch_ = std::get<1>(tp_.getOrien());
+    yaw_ = std::get<2>(tp_.getOrien());
+
+    vx_ = std::get<0>(tp_.getVel());
+    vy_ = std::get<0>(tp_.getVel());
+    vz_ = std::get<0>(tp_.getVel());
+
+    height_ = tp_.getHeight();
+    bat_ = tp_.getBattery();
+
+    ax_ = std::get<2>(tp_.getAcc());
+    ay_ = std::get<2>(tp_.getAcc());
+    az_ = std::get<2>(tp_.getAcc());
 }
 
 void State::pubOrien()const

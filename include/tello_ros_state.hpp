@@ -41,7 +41,8 @@ enum class Topic : char
 class State : protected Param
 {
 public:
-
+    State(std::map<Topic, ros::Publisher>& pubMap) : pubMap_{pubMap} {}
+    void operator()(const std::array<char, 1600>&, size_t n);
     void pubOrien()const;
     void pubVel()const;
     void pubPos()const;
@@ -50,6 +51,7 @@ public:
 
 private:
     std::map<Topic, ros::Publisher>& pubMap_;
+    TelloParser tp_;
 };
 
 
