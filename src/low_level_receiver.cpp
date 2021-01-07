@@ -49,7 +49,7 @@ struct LowLevelReceiver::LowLevelReceiver_private_
     udp::socket socket_;
     std::array<char, 1600> recv_buffer_{};
     udp::endpoint remote_endpoint_;
-    bool end_flag_{false};
+    bool read_flag_{true}, get_flag_{false};
     size_t count_;
 };
 
@@ -69,14 +69,20 @@ void LowLevelReceiver::LowLevelReceiver_private_::handle_receive(const boost::sy
     {
         std::cout << "\nReceive failed: " << error.message() << '\n';
     }
+    
+    // critical section
+    while(get_flag_);
+    read_flag_ = true;
     std::copy(begin(recv_buffer_), begin(recv_buffer_) + bytes_transferred, begin(buff_));
     count_ = bytes_transferred;
-    end_flag_ = true;
+    read_flag_ = false;
+
     wait();
 }
 
 void LowLevelReceiver::LowLevelReceiver_private_::receive()
 {
+    
     socket_.open(udp::v4());
     socket_.set_option(boost::asio::socket_base::reuse_address(true));
     socket_.bind(udp::endpoint(address::from_string(ip_), port_));
@@ -123,17 +129,27 @@ LowLevelReceiver::~LowLevelReceiver()
     pc.release();
 }
 
-bool LowLevelReceiver::getflag() const
+bool LowLevelReceiver::getFlagRead() const
 {
-    return pc->end_flag_;
+    return pc->read_flag_;
 }
 
-void LowLevelReceiver::resetflag()
+void LowLevelReceiver::resetFlagGet()
 {
-    pc->end_flag_ = false;
+    pc->get_flag_ = false;
 }
 
-size_t LowLevelReceiver::getlength() const
+void LowLevelReceiver::setFlagGet()
+{
+    pc->get_flag_ = true;
+}
+
+size_t LowLevelReceiver::getLength() const
 {
     return pc->count_;
+}
+
+pid_t LowLevelReceiver::getPid()const
+{
+    return getpid();
 }
