@@ -115,7 +115,7 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES tello_ros
-  CATKIN_DEPENDS roscpp rospy std_msgs
+  CATKIN_DEPENDS roscpp rospy std_msgs sensor_msgs tf2 geometry_msgs
   DEPENDS system_lib
 )
 
@@ -151,6 +151,8 @@ add_executable(${PROJECT_NAME}_pub_node src/low_level_receiver.cpp
                                         src/tello_ros_state.cpp
                                         src/tello_ros_state_pub.cpp)
 
+add_executable(${PROJECT_NAME}_camera_node  src/low_level_receiver.cpp
+                                            src/tello_ros_camera_pub.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -168,6 +170,10 @@ target_link_libraries(${PROJECT_NAME}_sub_node
 )
 
 target_link_libraries(${PROJECT_NAME}_pub_node
+   ${catkin_LIBRARIES}
+)
+
+target_link_libraries(${PROJECT_NAME}_camera_node
    ${catkin_LIBRARIES}
 )
 
